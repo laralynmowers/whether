@@ -1,16 +1,17 @@
 #!/usr/bin/ruby
-#ea980cd3868124c91041aa74b38bcf16  FORCAST API
+#GIT Todo Lar completed the following:
+# LM created repo "whether" [origin git@github.com:laralynmowers/whether.git]
+# LM checked code into repo & created (very basic) README
+# LM created feature branch "lar_feature"
+# LM revised code:
+  # Couldn't find gem "optparse" and am guessing that was a typo (found geocode parsing gem "OptionParser")?
+  # Think going with "google-weather" gem (works with "httparty") will be better than "forecast_io"
 
-#AIzaSyC0Tdh35uP7SF-9mu4D4ohr6NtNVnK3PfU  GOOGLE API
-
-#GIT Todo Homework
-#check in code
-#create feature branch
+#GIT Todo:
 #merge changes
 
 #TODO
 #--Parse Arguments --loc
-#research ruby gem for http api calls
 #Make a google api call
 ##https://maps.googleapis.com/maps/api/geocode/json?address=New%20Jersey&key=AIzaSyC0Tdh35uP7SF-9mu4D4ohr6NtNVnK3PfU
 ## Use the location results under "geometrey"
@@ -20,36 +21,33 @@
 #decision matrix !!
 #clean up code (functionalize)
 
-require 'forecast_io'
-require 'optparse'
+gem install google-weather #stupid simple fetching of the weather using google's api
+gem install httparty #Makes http fun! Also, makes consuming restful web services dead easy.
+gem install OptionParser #A flexible command line option parser.
 
-options = {}
+gem 'google-weather', '~> 0.3.0' #runtime dependencies include 'httparty'
+gem 'httparty', '~> 0.13.3' #runtime dependencies include 'json' and 'mliti_xml'
+gem 'OptionParser', '~> 0.5.1'
 
-OptionParser.new do |opts|
-  opts.banner = "Usage: lalaweather [options]"
 
-  opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
-    options[:verbose] = v
-  end
+require 'google_weather'
+require 'httparty'
+require 'OptionParser'
+require 'pp'
 
-  opts.on("-l", "--location LOCATION", "Set LOCATION") do |loc|
-  	options[:location] = loc
-  end
-end.parse!
+google = "AIzaSyC0Tdh35uP7SF-9mu4D4ohr6NtNVnK3PfU" #GOOGLE API
 
-options[:lala] = ["foo","bar"]
 
-#if options.zipcode
-	
-#end
 
-APIKEY = "ea980cd3868124c91041aa74b38bcf16"
+weather = GoogleWeather.new(46544)
 
-ForecastIO.configure do |configuration|
-  configuration.api_key = APIKEY
-end
+forecast = weather.forecast_conditions[0]
+puts forecast.day_of_week, forecast.low, forecast.high, forecast.condition
 
-forecast = ForecastIO.forecast(37.8267, -122.423)
+puts pp weather.forecast_information
+puts pp weather.current_conditions
+puts pp weather.forecast_conditions
 
-puts "#{options[:location]}"
+puts "#{weather}"
+
 
